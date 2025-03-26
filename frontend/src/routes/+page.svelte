@@ -63,6 +63,8 @@
       commandResponse = data.bot_response || '';
       if (data.response?.note){
         noteResponse = 'Note: ' + data.response.note
+      } else {
+        noteResponse = ''
       }
 
       // If an order was created or deleted, refresh totals and order history
