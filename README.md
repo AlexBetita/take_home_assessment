@@ -2,7 +2,7 @@
 
 Create a mock drive thru ordering system that allows users to place and cancel their orders using AI.
 
-![Example UI](./image.png)
+![Example UI](./sample.png)
 
 For this project, assume the order item options are either 1) burgers, 2) fries, or 3) drinks. 
 

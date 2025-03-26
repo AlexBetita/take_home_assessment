@@ -14,7 +14,7 @@ order_functions = [
                             "properties": {
                                 "item_name": {
                                     "type": "string",
-                                    "description": "Name of the item (e.g., Fries, Burger)."
+                                    "description": "Name of the item (e.g., Fries, Burger, Drinks)."
                                 },
                                 "quantity": {
                                     "type": "integer",

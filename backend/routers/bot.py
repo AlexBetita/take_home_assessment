@@ -52,9 +52,24 @@ def command(command_request: CommandRequest):
 def take_order(items: list, user_id: int):
     """
     Process and store the order in the database with an auto-incrementing order number.
+    Only orders for Burgers, Fries, and Drinks are accepted.
+    If any items are not on the menu, they are ignored and the response will note them.
     """
+    allowed_menu = {"Burgers", "Fries", "Drinks"}
+    valid_items = []
+    invalid_items = []
+    
+    for item in items:
+        # Only process allowed items
+        if item["item_name"] in allowed_menu:
+            valid_items.append(item)
+        else:
+            invalid_items.append(item["item_name"])
+    
+    if not valid_items:
+        return {"status": "No valid items ordered. Allowed items are: Burgers, Fries, Drinks."}
+    
     db = next(get_db())
-
     max_order_number = db.query(func.max(Order.order_number)).scalar()
     new_order_number = 1 if max_order_number is None else int(max_order_number) + 1
 
@@ -63,7 +78,7 @@ def take_order(items: list, user_id: int):
     db.commit()
     db.refresh(new_order)
 
-    for item in items:
+    for item in valid_items:
         new_order_item = OrderItem(
             order_id=new_order.id,
             item_name=item["item_name"],
@@ -72,12 +87,16 @@ def take_order(items: list, user_id: int):
         db.add(new_order_item)
     db.commit()
     
-    return {
+    response = {
         "order_id": new_order.id,
         "order_number": new_order_number,
-        "items": items,
+        "items": valid_items,
         "status": "Order received and stored in database"
     }
+    if invalid_items:
+        response["note"] = f"The following items were not processed as they are not on the menu: {', '.join(invalid_items)}"
+    
+    return response
 
 def delete_order(order_number: int, user_id: int):
     """

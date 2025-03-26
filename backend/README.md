@@ -5,5 +5,6 @@
 
 
 # Additional Setup
-- commands
-    pip install fastapi uvicorn sqlalchemy 'passlib[bcrypt]' python-jose openai
+- commands and requirements
+    * pip install fastapi uvicorn sqlalchemy 'passlib[bcrypt]' python-jose openai
+    * openapi key
