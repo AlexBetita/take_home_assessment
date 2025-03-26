@@ -10,6 +10,7 @@
   let driveThruMessage = '';
   let driveThruError = '';
   let commandResponse = ''; // To display the bot response
+  let noteResponse = '';
 
   onMount(async () => {
     // Check if the user is logged in
@@ -60,6 +61,9 @@
       const data = await res.json();
       // Save the bot response text
       commandResponse = data.bot_response || '';
+      if (data.response?.note){
+        noteResponse = 'Note: ' + data.response.note
+      }
 
       // If an order was created or deleted, refresh totals and order history
       if (data.response && (data.response.order_number || data.response.status)) {
@@ -175,6 +179,17 @@
     color: #4f46e5;
   }
 
+  .noteResponse {
+    background: #FAA0A0;
+    border: 1px solid #7C3030;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #722F37;
+  }
+
   .orderHistory {
     margin-top: 2rem;
   }
@@ -236,6 +251,10 @@
   <!-- Display Bot Response -->
   {#if commandResponse}
     <div class="commandResponse">{commandResponse}</div>
+  {/if}
+
+  {#if noteResponse}
+    <div class="noteResponse">{noteResponse}</div>
   {/if}
 
   <!-- Order History -->
